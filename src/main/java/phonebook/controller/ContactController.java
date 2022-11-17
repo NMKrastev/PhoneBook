@@ -25,7 +25,9 @@ public class ContactController {
 
     @PostMapping("/")
     public String addContact(Contact contact) {
-        this.contacts.add(contact);
+        if (!contact.getName().isEmpty() && !contact.getNumber().isEmpty()) {
+            this.contacts.add(contact);
+        }
         return "redirect:/";
     }
 }
