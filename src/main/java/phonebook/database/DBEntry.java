@@ -2,8 +2,9 @@ package phonebook.database;
 
 import phonebook.entity.Contact;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DBEntry {
 
@@ -26,5 +27,20 @@ public class DBEntry {
         }
 
         return isAdded;
+    }
+
+    public static List<Contact> getAllCustomers() throws ClassNotFoundException, SQLException {
+        Connection connection = DBConnection.createConnection();
+        Statement statement = connection.createStatement();
+        String sql = "SELECT * FROM contacts";
+        ResultSet resultSet = statement.executeQuery(sql);
+        List<Contact> contacts = new ArrayList<>();
+        while (resultSet.next()) {
+            Contact contact = new Contact(resultSet.getString("firstName"), resultSet.getString("lastName"),
+                    resultSet.getString("company"), resultSet.getString("phoneNumber"),
+                    resultSet.getString("email"), resultSet.getString("age"));
+            contacts.add(contact);
+        }
+        return contacts;
     }
 }

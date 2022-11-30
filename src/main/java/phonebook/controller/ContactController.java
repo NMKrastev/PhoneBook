@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import phonebook.database.DBEntry;
 import phonebook.entity.Contact;
+
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +20,11 @@ public class ContactController {
     }
 
     @GetMapping("/")
-    public ModelAndView index (ModelAndView modelAndView) {
+    public ModelAndView index (ModelAndView modelAndView) throws SQLException, ClassNotFoundException {
         modelAndView.setViewName("index");
+        if (contacts.isEmpty()) {
+            contacts = DBEntry.getAllCustomers();
+        }
         modelAndView.addObject("contacts", contacts);
         return modelAndView;
     }
