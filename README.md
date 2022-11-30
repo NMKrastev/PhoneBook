@@ -26,7 +26,7 @@ I have made changes to the "skeleton" of the application
 2. Added the new values to the constructor and created new java classes used for DB connection and adding DB entries.
 3. Created method for adding new contact to the DB, if all the fields are filled.
 4. I used the same DB as of my previous project: [ContactsBook-DB](https://github.com/NMKrastev/ContactsBook-DB). You can use this project as reference on how to configure the table in your DB.
-
+5. Starting the application loads the data from the DB table ``contacts`` and shows it in on screen. If you have data in your table it will be visualized from the start.
 </p>
 
 * Note: Feel free to make any changes to the application!
