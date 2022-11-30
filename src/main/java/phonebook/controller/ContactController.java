@@ -3,6 +3,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+import phonebook.database.DBEntry;
 import phonebook.entity.Contact;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +26,14 @@ public class ContactController {
 
     @PostMapping("/")
     public String addContact(Contact contact) {
-        if (!contact.getName().isEmpty() && !contact.getNumber().isEmpty()) {
+        if (!contact.getFirstName().isEmpty() && !contact.getLastName().isEmpty() && !contact.getCompany().isEmpty() &&
+                !contact.getNumber().isEmpty() && !contact.getEmail().isEmpty() && !contact.getAge().isEmpty()) {
             this.contacts.add(contact);
+           boolean isAdded = DBEntry.addContact(contact);
+           if (isAdded) {
+               return "redirect:/";
+           }
         }
-        return "redirect:/";
+        return "redirect:/error";
     }
 }
