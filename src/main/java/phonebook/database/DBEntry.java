@@ -56,7 +56,7 @@ public class DBEntry {
         try {
             Connection connection = DBConnection.createConnection();
             Statement statement = connection.createStatement();
-            String sql = "SELECT * FROM contacts";
+            String sql = "SELECT * FROM contacts ORDER BY firstName ASC";
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
                 Contact contact = new Contact(resultSet.getString("firstName"), resultSet.getString("lastName"),
