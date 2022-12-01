@@ -39,6 +39,6 @@ I have added the simple ``Edit`` option and functionality behind it.
 * Note: Feel free to make any changes to the application!
 
 **Screenshots:**
-![phoneBookScreenshot](https://github.com/NMKrastev/phonebook/blob/dev/screenshots/Phonebook.png?raw=true "phonebook")
-![editContactScreenshot](https://github.com/NMKrastev/phonebook/blob/dev/screenshots/editContact.png?raw=true "editContact")
-![DBEntryScreenshot](https://github.com/NMKrastev/phonebook/blob/dev/screenshots/DBEntries.PNG?raw=true "DBEntries")
+![phoneBookScreenshot](https://github.com/NMKrastev/phonebook/blob/main/screenshots/Phonebook.png?raw=true "phonebook")
+![editContactScreenshot](https://github.com/NMKrastev/phonebook/blob/main/screenshots/editContact.png?raw=true "editContact")
+![DBEntryScreenshot](https://github.com/NMKrastev/phonebook/blob/main/screenshots/DBEntries.PNG?raw=true "DBEntries")
