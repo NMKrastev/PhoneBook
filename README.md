@@ -29,8 +29,16 @@ I have made changes to the "skeleton" of the application
 5. Starting the application loads the data from the DB table ``contacts`` and shows it on screen. If you have data in your table it will be visualized from the start.
 </p>
 
+### UPDATE:
+I have added the simple ``Edit`` option and functionality behind it.
+1. Click on the ``Edit`` button of the contact you wish to change.
+2. Change any or multiple values and click Save.
+3. You will be redirected to the ``home`` page, where your changes will be visible.
+4. You can click on ``Cancel`` button to return to ``home`` page.
+
 * Note: Feel free to make any changes to the application!
 
 **Screenshots:**
 ![phoneBookScreenshot](https://github.com/NMKrastev/phonebook/blob/dev/screenshots/Phonebook.png?raw=true "phonebook")
+![editContactScreenshot](https://github.com/NMKrastev/phonebook/blob/dev/screenshots/editContact.png?raw=true "editContact")
 ![DBEntryScreenshot](https://github.com/NMKrastev/phonebook/blob/dev/screenshots/DBEntries.PNG?raw=true "DBEntries")
