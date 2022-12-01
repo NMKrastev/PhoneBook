@@ -41,14 +41,14 @@
         </thead>
         <tbody>
         <tr th:each="contact : ${contacts}">
-            <td th:text="${contact.firstName}"></td>
-            <td th:text="${contact.lastName}"></td>
-            <td th:text="${contact.company}"></td>
-            <td th:text="${contact.number}"></td>
-            <td th:text="${contact.email}"></td>
-            <td th:text="${contact.age}"></td>
+            <td th:text="${contact.getValue().getFirstName()}"></td>
+            <td th:text="${contact.getValue().getLastName()}"></td>
+            <td th:text="${contact.getValue().getCompany()}"></td>
+            <td th:text="${contact.getValue().getNumber()}"></td>
+            <td th:text="${contact.getValue().getEmail()}"></td>
+            <td th:text="${contact.getValue().getAge()}"></td>
             <td>
-                <form th:action=" @{'/edit{number}'(number=${contact.getNumber()})}">
+                <form th:action=" @{'/edit{number}'(number=${contact.getValue().getNumber()})}">
                     <button type="submit" class="btn btn-primary">Edit</button>
                 </form>
             </td>
@@ -108,13 +108,10 @@
             </div>
         </fieldset>
     </form>
-
     <hr/>
-
     <footer>
         <p>&copy; Software University</p>
     </footer>
 </div>
-
 </body>
 </html>

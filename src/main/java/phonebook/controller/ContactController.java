@@ -1,27 +1,27 @@
 package phonebook.controller;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import phonebook.database.DBEntry;
 import phonebook.entity.Contact;
-import java.util.ArrayList;
-import java.util.List;
 
-@RestController
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+@Controller
 public class ContactController {
 
-    private List<Contact> contacts;
+    private Map<String, Contact> contacts;
 
     public ContactController() {
-        this.contacts = new ArrayList<>();
+        this.contacts = new LinkedHashMap<>();
     }
 
     @GetMapping("/")
     public ModelAndView index(ModelAndView modelAndView) {
         modelAndView.setViewName("index");
-        if (contacts.isEmpty()) {
-            contacts = DBEntry.getAllCustomers();
-        }
+        contacts = DBEntry.getAllCustomers();
         modelAndView.addObject("contacts", contacts);
         return modelAndView;
     }
@@ -30,7 +30,7 @@ public class ContactController {
     public String addContact(Contact contact) {
         if (!contact.getFirstName().isEmpty() && !contact.getLastName().isEmpty() && !contact.getCompany().isEmpty() &&
                 !contact.getNumber().isEmpty() && !contact.getEmail().isEmpty() && !contact.getAge().isEmpty()) {
-            this.contacts.add(contact);
+            this.contacts.put(contact.getNumber(), contact);
             boolean isAdded = DBEntry.addContact(contact);
             if (isAdded) {
                 return "redirect:/";
@@ -42,13 +42,25 @@ public class ContactController {
     @GetMapping("/edit{number}")
     public ModelAndView edit(@PathVariable String number, ModelAndView modelAndView) {
         modelAndView.setViewName("edit");
-        for (Contact contact : contacts) {
-            if (contact.getNumber().equals(number)) {
-                modelAndView.addObject("contact", contact);
-                break;
-            }
-        }
+        modelAndView.addObject(this.contacts.get(number));
         return modelAndView;
+    }
+
+    @PostMapping("/edit{number}")
+    public String editContact(@PathVariable String number, Contact contact) {
+
+        Contact currentContact = this.contacts.get(number);
+        currentContact.setFirstName(contact.getFirstName());
+        currentContact.setLastName(contact.getLastName());
+        currentContact.setCompany(contact.getCompany());
+        currentContact.setNumber(contact.getNumber());
+        currentContact.setEmail(contact.getEmail());
+        currentContact.setAge(contact.getAge());
+        boolean isEdited = DBEntry.editContact(currentContact, number);
+        if (isEdited) {
+            return "redirect:/";
+        }
+        return "redirect:/error";
     }
 
     @GetMapping("/error")
@@ -59,7 +71,7 @@ public class ContactController {
     }
 
     @GetMapping("/allcontacts")
-    public ModelAndView allContacts(ModelAndView modelAndView) {
+    public ModelAndView showAllContacts(ModelAndView modelAndView) {
         modelAndView.setViewName("allcontacts");
         modelAndView.addObject("contacts", contacts);
         return modelAndView;

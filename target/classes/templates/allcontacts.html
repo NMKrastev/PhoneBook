@@ -39,18 +39,18 @@
         </thead>
         <tbody>
         <tr th:each="contact : ${contacts}">
-            <td th:text="${contact.firstName}"></td>
-            <td th:text="${contact.lastName}"></td>
-            <td th:text="${contact.company}"></td>
-            <td th:text="${contact.number}"></td>
-            <td th:text="${contact.email}"></td>
-            <td th:text="${contact.age}"></td>
+            <td th:text="${contact.getValue().getFirstName()}"></td>
+            <td th:text="${contact.getValue().getLastName()}"></td>
+            <td th:text="${contact.getValue().getCompany()}"></td>
+            <td th:text="${contact.getValue().getNumber()}"></td>
+            <td th:text="${contact.getValue().getEmail()}"></td>
+            <td th:text="${contact.getValue().getAge()}"></td>
         </tr>
         </tbody>
     </table>
+    <footer>
+        <p>&copy; Software University</p>
+    </footer>
 </div>
-<footer>
-    <p>&copy; Software University</p>
-</footer>
 </body>
 </html>

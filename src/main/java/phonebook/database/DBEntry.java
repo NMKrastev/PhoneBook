@@ -3,8 +3,8 @@ package phonebook.database;
 import phonebook.entity.Contact;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class DBEntry {
 
@@ -51,8 +51,8 @@ public class DBEntry {
         return isEdited;
     }
 
-    public static List<Contact> getAllCustomers() {
-        List<Contact> contacts = new ArrayList<>();
+    public static Map<String, Contact> getAllCustomers() {
+        Map<String, Contact> contacts = new LinkedHashMap<>();
         try {
             Connection connection = DBConnection.createConnection();
             Statement statement = connection.createStatement();
@@ -62,7 +62,7 @@ public class DBEntry {
                 Contact contact = new Contact(resultSet.getString("firstName"), resultSet.getString("lastName"),
                         resultSet.getString("company"), resultSet.getString("phoneNumber"),
                         resultSet.getString("email"), resultSet.getString("age"));
-                contacts.add(contact);
+                contacts.put(contact.getNumber(), contact);
             }
         } catch (Exception e) {
             e.printStackTrace();
