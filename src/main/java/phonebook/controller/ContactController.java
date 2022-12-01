@@ -1,12 +1,11 @@
 package phonebook.controller;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import phonebook.database.DBEntry;
 import phonebook.entity.Contact;
-
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class ContactController {
     }
 
     @GetMapping("/")
-    public ModelAndView index (ModelAndView modelAndView) throws SQLException, ClassNotFoundException {
+    public ModelAndView index (ModelAndView modelAndView) {
         modelAndView.setViewName("index");
         if (contacts.isEmpty()) {
             contacts = DBEntry.getAllCustomers();

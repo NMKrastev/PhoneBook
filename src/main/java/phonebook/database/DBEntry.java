@@ -29,17 +29,21 @@ public class DBEntry {
         return isAdded;
     }
 
-    public static List<Contact> getAllCustomers() throws ClassNotFoundException, SQLException {
-        Connection connection = DBConnection.createConnection();
-        Statement statement = connection.createStatement();
-        String sql = "SELECT * FROM contacts";
-        ResultSet resultSet = statement.executeQuery(sql);
+    public static List<Contact> getAllCustomers() {
         List<Contact> contacts = new ArrayList<>();
-        while (resultSet.next()) {
-            Contact contact = new Contact(resultSet.getString("firstName"), resultSet.getString("lastName"),
-                    resultSet.getString("company"), resultSet.getString("phoneNumber"),
-                    resultSet.getString("email"), resultSet.getString("age"));
-            contacts.add(contact);
+        try {
+            Connection connection = DBConnection.createConnection();
+            Statement statement = connection.createStatement();
+            String sql = "SELECT * FROM contacts";
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                Contact contact = new Contact(resultSet.getString("firstName"), resultSet.getString("lastName"),
+                        resultSet.getString("company"), resultSet.getString("phoneNumber"),
+                        resultSet.getString("email"), resultSet.getString("age"));
+                contacts.add(contact);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return contacts;
     }
