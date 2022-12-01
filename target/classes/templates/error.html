@@ -1,10 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Error</title>
+    <title>Phonebook</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link th:href="@{css/bootstrap.css}" rel="stylesheet"/>
 </head>
+
 <body>
-<h1>Error</h1>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" th:href="@{/}">Phonebook</a>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <form class="form-horizontal" th:method="POST">
+        <fieldset>
+            <legend>Contacts is not added to your phonebook due to an error!</legend>
+        </fieldset>
+    </form>
+
+    <hr/>
+
+    <footer>
+        <p>&copy; Software University</p>
+    </footer>
+</div>
+
 </body>
 </html>

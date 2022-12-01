@@ -27,83 +27,54 @@
 
 
 <div class="container">
-    <legend><a class="navbar-brand" th:href="@{/allcontacts}">All Contacts</a></legend>
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">First name</th>
-            <th scope="col">Last name</th>
-            <th scope="col">Company</th>
-            <th scope="col">Number</th>
-            <th scope="col">Email</th>
-            <th scope="col">Age</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="contact : ${contacts}">
-            <td th:text="${contact.firstName}"></td>
-            <td th:text="${contact.lastName}"></td>
-            <td th:text="${contact.company}"></td>
-            <td th:text="${contact.number}"></td>
-            <td th:text="${contact.email}"></td>
-            <td th:text="${contact.age}"></td>
-            <td>
-                <form th:action=" @{'/edit{number}'(number=${contact.getNumber()})}">
-                    <button type="submit" class="btn btn-primary">Edit</button>
-                </form>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-
-    <form class="form-horizontal" th:method="POST">
+    <form class="form-horizontal" th:method="PUT">
         <fieldset>
-            <legend>New Contact</legend>
+            <legend>Edit contact</legend>
             <div class="form-group">
                 <label for="firstName" class="col-lg-2 control-label">First name</label>
                 <div class="col-lg-10">
-                    <input type="text" autofocus="autofocus" name="firstName" title="First name" class="form-control"
+                    <input th:value="${contact.getFirstName()}" type="text" autofocus="autofocus" name="firstName" title="First name" class="form-control"
                            id="firstName"/>
                 </div>
             </div>
             <div class="form-group">
                 <label for="lastName" class="col-lg-2 control-label">Last name</label>
                 <div class="col-lg-10">
-                    <input type="text" autofocus="autofocus" name="lastName" title="Last name" class="form-control"
+                    <input th:value="${contact.getLastName()}" type="text" autofocus="autofocus" name="lastName" title="Last name" class="form-control"
                            id="lastName"/>
                 </div>
             </div>
             <div class="form-group">
                 <label for="company" class="col-lg-2 control-label">Company</label>
                 <div class="col-lg-10">
-                    <input type="text" autofocus="autofocus" name="company" title="Company" class="form-control"
+                    <input th:value="${contact.getCompany()}" type="text" autofocus="autofocus" name="company" title="Company" class="form-control"
                            id="company"/>
                 </div>
             </div>
             <div class="form-group">
                 <label for="number" class="col-lg-2 control-label">Number</label>
                 <div class="col-lg-10">
-                    <input type="text" autofocus="autofocus" name="number" title="Number" class="form-control"
+                    <input th:value="${contact.getNumber()}" type="text" autofocus="autofocus" name="number" title="Number" class="form-control"
                            id="number"/>
                 </div>
             </div>
             <div class="form-group">
                 <label for="email" class="col-lg-2 control-label">Email</label>
                 <div class="col-lg-10">
-                    <input type="text" autofocus="autofocus" name="email" title="Email" class="form-control"
+                    <input th:value="${contact.getEmail()}" type="text" autofocus="autofocus" name="email" title="Email" class="form-control"
                            id="email"/>
                 </div>
             </div>
             <div class="form-group">
                 <label for="age" class="col-lg-2 control-label">Age</label>
                 <div class="col-lg-10">
-                    <input type="text" autofocus="autofocus" name="age" title="Age" class="form-control"
+                    <input th:value="${contact.age}" type="text" autofocus="autofocus" name="age" title="Age" class="form-control"
                            id="age"/>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-lg-10 col-lg-offset-2">
-                    <button type="submit" class="btn btn-primary">Add</button>
+                    <button type="submit" class="btn btn-primary">Edit</button>
                 </div>
             </div>
         </fieldset>

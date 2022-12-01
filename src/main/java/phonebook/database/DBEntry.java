@@ -12,8 +12,8 @@ public class DBEntry {
         boolean isAdded = false;
         try {
             Connection connection = DBConnection.createConnection();
-            String query = "INSERT INTO contacts(firstName,lastName,company,phoneNumber,email,age) VALUE(?,?,?,?,?,?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            String addQuery = "INSERT INTO contacts(firstName,lastName,company,phoneNumber,email,age) VALUE(?,?,?,?,?,?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(addQuery);
             preparedStatement.setString(1, contact.getFirstName());
             preparedStatement.setString(2, contact.getLastName());
             preparedStatement.setString(3, contact.getCompany());
@@ -27,6 +27,28 @@ public class DBEntry {
         }
 
         return isAdded;
+    }
+
+    public static boolean editContact(Contact contact, String number) {
+        boolean isEdited = false;
+        try {
+            Connection connection = DBConnection.createConnection();
+            String editQuery = "UPDATE contacts SET firstName=?,lastName=?,company=?,phoneNumber=?,email=?,age=? WHERE phoneNumber=?";
+            PreparedStatement preparedStatement = connection.prepareStatement(editQuery);
+            preparedStatement.setString(1, contact.getFirstName());
+            preparedStatement.setString(2, contact.getLastName());
+            preparedStatement.setString(3, contact.getCompany());
+            preparedStatement.setString(4, contact.getNumber());
+            preparedStatement.setString(5, contact.getEmail());
+            preparedStatement.setInt(6, Integer.parseInt(contact.getAge()));
+            preparedStatement.setString(7, number);
+            preparedStatement.executeUpdate();
+            isEdited = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return isEdited;
     }
 
     public static List<Contact> getAllCustomers() {

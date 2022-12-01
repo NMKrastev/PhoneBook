@@ -47,6 +47,11 @@
             <td th:text="${contact.number}"></td>
             <td th:text="${contact.email}"></td>
             <td th:text="${contact.age}"></td>
+            <td>
+                <form th:action=" @{'/edit{number}'(number=${contact.getNumber()})}">
+                    <button type="submit" class="btn btn-primary">Edit</button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>
