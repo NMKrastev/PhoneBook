@@ -21,7 +21,7 @@ public class ContactController {
     @GetMapping("/")
     public ModelAndView index(ModelAndView modelAndView) {
         modelAndView.setViewName("index");
-        contacts = DBEntry.getAllCustomers();
+        contacts = DBEntry.getAllContacts();
         modelAndView.addObject("contacts", contacts);
         return modelAndView;
     }
@@ -48,7 +48,6 @@ public class ContactController {
 
     @PostMapping("/edit{number}")
     public String editContact(@PathVariable String number, Contact contact) {
-
         Contact currentContact = this.contacts.get(number);
         currentContact.setFirstName(contact.getFirstName());
         currentContact.setLastName(contact.getLastName());
@@ -58,6 +57,22 @@ public class ContactController {
         currentContact.setAge(contact.getAge());
         boolean isEdited = DBEntry.editContact(currentContact, number);
         if (isEdited) {
+            return "redirect:/";
+        }
+        return "redirect:/error";
+    }
+
+    @GetMapping("/delete{number}")
+    public ModelAndView delete(@PathVariable String number, ModelAndView modelAndView) {
+        modelAndView.setViewName("delete");
+        modelAndView.addObject(this.contacts.get(number));
+        return modelAndView;
+    }
+
+    @PostMapping("/delete{number}")
+    public String deleteContact(@PathVariable String number) {
+        boolean isDeleted = DBEntry.deleteContact(number);
+        if (isDeleted) {
             return "redirect:/";
         }
         return "redirect:/error";
