@@ -52,6 +52,11 @@
                     <button type="submit" class="btn btn-primary">Edit</button>
                 </form>
             </td>
+            <td>
+                <form th:action=" @{'/delete{number}'(number=${contact.getValue().getNumber()})}">
+                    <button type="submit" class="btn btn-primary">Delete</button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>
