@@ -36,9 +36,17 @@ I have added the simple ``Edit`` option and functionality behind it.
 3. You will be redirected to the ``home`` page, where your changes will be visible.
 4. You can click on ``Cancel`` button to return to ``home`` page.
 
+### UPDATE:
+I have added another simple ``Delete`` option and functionality behind it.
+1. Click on the ``Delete`` button of the contact you wish to remove.
+2. You will be redirected to the delete page of the specific contact you selected.
+3. Click on the ``Delete`` button to permanently remove that contact from your phonebook.
+4. You can click on ``Cancel`` button to return to ``home`` page.
+
 * Note: Feel free to make any changes to the application!
 
 **Screenshots:**
 ![phoneBookScreenshot](https://github.com/NMKrastev/phonebook/blob/main/screenshots/Phonebook.png?raw=true "phonebook")
 ![editContactScreenshot](https://github.com/NMKrastev/phonebook/blob/main/screenshots/editContact.png?raw=true "editContact")
+![deleteContactScreenshot](https://github.com/NMKrastev/phonebook/blob/main/screenshots/deleteContact.png?raw=true "deleteContact")
 ![DBEntryScreenshot](https://github.com/NMKrastev/phonebook/blob/main/screenshots/DBEntries.PNG?raw=true "DBEntries")
