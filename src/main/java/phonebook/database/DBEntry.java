@@ -51,7 +51,24 @@ public class DBEntry {
         return isEdited;
     }
 
-    public static Map<String, Contact> getAllCustomers() {
+    public static boolean deleteContact(String number) {
+        boolean isDeleted = false;
+        try {
+            Connection connection = DBConnection.createConnection();
+            String deleteQuery = "DELETE FROM contacts WHERE phoneNumber=?";
+            PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery);
+            preparedStatement.setString(1, number);
+            preparedStatement.executeUpdate();
+            isDeleted = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return isDeleted;
+    }
+
+
+    public static Map<String, Contact> getAllContacts() {
         Map<String, Contact> contacts = new LinkedHashMap<>();
         try {
             Connection connection = DBConnection.createConnection();
