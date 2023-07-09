@@ -3,78 +3,93 @@ package phonebook.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import phonebook.database.DBEntry;
-import phonebook.entity.Contact;
+import phonebook.entities.dtos.company.CompanyAddDTO;
+import phonebook.entities.dtos.contact.ContactAddDTO;
+import phonebook.services.contact.ContactService;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class ContactController {
 
-    private Map<String, Contact> contacts;
+    private List<ContactAddDTO> contactsDTO;
+    private final ContactService contactService;
 
-    public ContactController() {
-        this.contacts = new LinkedHashMap<>();
+    public ContactController(ContactService contactService) {
+        this.contactService = contactService;
+        this.contactsDTO = new ArrayList<>();
     }
 
     @GetMapping("/")
     public ModelAndView index(ModelAndView modelAndView) {
+
         modelAndView.setViewName("index");
-        contacts = DBEntry.getAllContacts();
-        modelAndView.addObject("contacts", contacts);
+        //this.contacts = DBEntry.getAllContacts();
+        this.contactsDTO = this.contactService.findAllContacts();
+
+        modelAndView.addObject("contacts", contactsDTO);
+
         return modelAndView;
     }
 
     @PostMapping("/")
-    public String addContact(Contact contact) {
-        if (!contact.getFirstName().isEmpty() && !contact.getLastName().isEmpty() && !contact.getCompany().isEmpty() &&
-                !contact.getNumber().isEmpty() && !contact.getEmail().isEmpty() && !contact.getAge().isEmpty()) {
-            this.contacts.put(contact.getNumber(), contact);
-            boolean isAdded = DBEntry.addContact(contact);
-            if (isAdded) {
-                return "redirect:/";
-            }
-        }
-        return "redirect:/error";
-    }
+    public ModelAndView addContact(ModelAndView modelAndView, ContactAddDTO contactDTO) {
 
-    @GetMapping("/edit{number}")
-    public ModelAndView edit(@PathVariable String number, ModelAndView modelAndView) {
-        modelAndView.setViewName("edit");
-        modelAndView.addObject(this.contacts.get(number));
+        if (this.contactService.addContact(contactDTO)) {
+            modelAndView.setViewName("redirect:/");
+        } else {
+            modelAndView.setViewName("redirect:/error");
+        }
+
         return modelAndView;
     }
 
-    @PostMapping("/edit{number}")
-    public String editContact(@PathVariable String number, Contact contact) {
-        Contact currentContact = this.contacts.get(number);
-        currentContact.setFirstName(contact.getFirstName());
-        currentContact.setLastName(contact.getLastName());
-        currentContact.setCompany(contact.getCompany());
-        currentContact.setNumber(contact.getNumber());
-        currentContact.setEmail(contact.getEmail());
-        currentContact.setAge(contact.getAge());
-        boolean isEdited = DBEntry.editContact(currentContact, number);
-        if (isEdited) {
-            return "redirect:/";
+    @GetMapping("/edit{phoneNumber}")
+    public ModelAndView edit(ModelAndView modelAndView, @PathVariable String phoneNumber) {
+
+        modelAndView.setViewName("edit");
+
+        final ContactAddDTO contactDTO = this.contactService.findContact(phoneNumber);
+
+        modelAndView.addObject(contactDTO);
+
+        return modelAndView;
+    }
+
+    @PostMapping("/edit{phoneNumber}")
+    public ModelAndView editContact(ModelAndView modelAndView, ContactAddDTO contactDTO, @PathVariable String phoneNumber) {
+
+        final ContactAddDTO currentContact = this.contactService.findContact(phoneNumber);
+        currentContact.setFirstName(contactDTO.getFirstName());
+        currentContact.setLastName(contactDTO.getLastName());
+        currentContact.setCompany(new CompanyAddDTO(contactDTO.getCompany().getName()));
+        currentContact.setPhoneNumber(contactDTO.getPhoneNumber());
+        currentContact.setEmail(contactDTO.getEmail());
+        currentContact.setAge(contactDTO.getAge());
+
+        if (this.contactService.editContact(contactDTO, phoneNumber)) {
+            modelAndView.setViewName("redirect:/");
+        } else {
+            modelAndView.setViewName("redirect:/error");
         }
-        return "redirect:/error";
+
+        return modelAndView;
     }
 
     @GetMapping("/delete{number}")
     public ModelAndView delete(@PathVariable String number, ModelAndView modelAndView) {
-        modelAndView.setViewName("delete");
-        modelAndView.addObject(this.contacts.get(number));
+//        modelAndView.setViewName("delete");
+//        modelAndView.addObject(this.contacts.get(number));
         return modelAndView;
     }
 
     @PostMapping("/delete{number}")
     public String deleteContact(@PathVariable String number) {
-        boolean isDeleted = DBEntry.deleteContact(number);
-        if (isDeleted) {
-            return "redirect:/";
-        }
+//        boolean isDeleted = DBEntry.deleteContact(number);
+//        if (isDeleted) {
+//            return "redirect:/";
+//        }
         return "redirect:/error";
     }
 
@@ -88,7 +103,7 @@ public class ContactController {
     @GetMapping("/allcontacts")
     public ModelAndView showAllContacts(ModelAndView modelAndView) {
         modelAndView.setViewName("allcontacts");
-        modelAndView.addObject("contacts", contacts);
+        modelAndView.addObject("contacts", this.contactsDTO);
         return modelAndView;
     }
 }

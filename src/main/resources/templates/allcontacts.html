@@ -32,19 +32,20 @@
             <th scope="col">First name</th>
             <th scope="col">Last name</th>
             <th scope="col">Company</th>
-            <th scope="col">Number</th>
+            <th scope="col">Phone Number</th>
             <th scope="col">Email</th>
             <th scope="col">Age</th>
         </tr>
         </thead>
         <tbody>
+        <!--/*@thymesVar id="contact" type="phonebook.entities.dtos.contact.ContactAddDTO"*/-->
         <tr th:each="contact : ${contacts}">
-            <td th:text="${contact.getValue().getFirstName()}"></td>
-            <td th:text="${contact.getValue().getLastName()}"></td>
-            <td th:text="${contact.getValue().getCompany()}"></td>
-            <td th:text="${contact.getValue().getNumber()}"></td>
-            <td th:text="${contact.getValue().getEmail()}"></td>
-            <td th:text="${contact.getValue().getAge()}"></td>
+            <td th:text="${contact.getFirstName()}"></td>
+            <td th:text="${contact.getLastName()}"></td>
+            <td th:text="${contact.getCompany().getName()}"></td>
+            <td th:text="${contact.getPhoneNumber()}"></td>
+            <td th:text="${contact.getEmail()}"></td>
+            <td th:text="${contact.getAge()}"></td>
         </tr>
         </tbody>
     </table>
