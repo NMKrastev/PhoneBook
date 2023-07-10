@@ -8,4 +8,6 @@ import phonebook.entities.Contact;
 public interface ContactRepository extends JpaRepository<Contact, Long> {
 
     Contact findByPhoneNumber(String phoneNumber);
+
+    void deleteByPhoneNumber(String phoneNumber);
 }

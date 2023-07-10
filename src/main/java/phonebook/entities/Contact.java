@@ -35,7 +35,7 @@ public class Contact extends BaseEntity {
     @Pattern(regexp = "^\\s*(?:\\+?(\\d{1,3}))?[-. (]*(\\d{3})[-. )]*(\\d{3})[-. ]*(\\d{3,4})(?: *x(\\d+))?\\s*$")
     private String phoneNumber;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     @Email
     private String email;
 

@@ -1,17 +1,18 @@
 package phonebook.services.contact;
 
-import phonebook.entities.Contact;
-import phonebook.entities.dtos.contact.ContactAddDTO;
+import phonebook.entities.dtos.contact.ContactInfoDTO;
 
 import java.util.List;
 
 public interface ContactService {
 
-    List<ContactAddDTO> findAllContacts();
+    List<ContactInfoDTO> findAllContacts();
 
-    boolean addContact(ContactAddDTO contactDTO);
+    boolean addContact(ContactInfoDTO contactDTO);
 
-    ContactAddDTO findContact(String phoneNumber);
+    ContactInfoDTO findContact(String phoneNumber);
 
-    boolean editContact(ContactAddDTO contactDTO, String phoneNumber);
+    boolean editContact(ContactInfoDTO contactDTO, String phoneNumber);
+
+    boolean deleteContact(String phoneNumber);
 }

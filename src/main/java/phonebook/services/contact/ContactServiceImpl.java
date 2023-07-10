@@ -5,11 +5,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import phonebook.entities.Company;
 import phonebook.entities.Contact;
-import phonebook.entities.dtos.contact.ContactAddDTO;
+import phonebook.entities.dtos.contact.ContactInfoDTO;
 import phonebook.repositories.CompanyRepository;
 import phonebook.repositories.ContactRepository;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -26,24 +25,20 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public List<ContactAddDTO> findAllContacts() {
+    public List<ContactInfoDTO> findAllContacts() {
 
         final List<Contact> contacts = this.contactRepository.findAll();
 
         return contacts
                 .stream()
-                .map(contact -> this.mapper.map(contact, ContactAddDTO.class))
+                .map(contact -> this.mapper.map(contact, ContactInfoDTO.class))
                 .toList();
     }
 
     @Override
-    public boolean addContact(ContactAddDTO contactDTO) {
+    public boolean addContact(ContactInfoDTO contactDTO) {
 
         final Contact contact = this.mapper.map(contactDTO, Contact.class);
-
-        if (contact.getCompany().getName() == null || contact.getCompany().getName().isEmpty()) {
-            return false;
-        }
 
         Company company = this.companyRepository
                 .findByName(contact.getCompany().getName());
@@ -70,23 +65,68 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public ContactAddDTO findContact(String phoneNumber) {
+    public ContactInfoDTO findContact(String phoneNumber) {
 
         final Contact contact = this.contactRepository.findByPhoneNumber(phoneNumber);
 
-        return this.mapper.map(contact, ContactAddDTO.class);
+        return this.mapper.map(contact, ContactInfoDTO.class);
     }
 
     @Override
     @Transactional
-    public boolean editContact(ContactAddDTO contactDTO, String phoneNumber) {
+    public boolean editContact(ContactInfoDTO contactDTO, String phoneNumber) {
 
-        final Contact contact = this.contactRepository.findByPhoneNumber(phoneNumber);
+        final Contact contactToEdit = this.contactRepository.findByPhoneNumber(phoneNumber);
 
-        this.mapper.map(contactDTO, contact);
+        if (!contactToEdit.getFirstName().equals(contactDTO.getFirstName())) {
+            contactToEdit.setFirstName(contactDTO.getFirstName());
+        }
+
+        if (!contactToEdit.getLastName().equals(contactDTO.getLastName())) {
+            contactToEdit.setLastName(contactDTO.getLastName());
+        }
+
+        if (!contactToEdit.getCompany().getName().equals(contactDTO.getCompany().getName())) {
+
+            Company company = this.companyRepository.findByName(contactDTO.getCompany().getName());
+
+            if (company == null) {
+
+                company = new Company(contactDTO.getCompany().getName());
+                this.companyRepository.saveAndFlush(company);
+                contactToEdit.setCompany(company);
+
+            } else {
+                contactToEdit.setCompany(company);
+            }
+        }
+
+        if (!contactToEdit.getPhoneNumber().equals(contactDTO.getPhoneNumber())) {
+            contactToEdit.setPhoneNumber(contactDTO.getPhoneNumber());
+        }
+
+        if (!contactToEdit.getEmail().equals(contactDTO.getEmail())) {
+            contactToEdit.setEmail(contactDTO.getEmail());
+        }
+
+        if (contactToEdit.getAge() != contactDTO.getAge()) {
+            contactToEdit.setAge(contactDTO.getAge());
+        }
 
         try {
-            this.contactRepository.saveAndFlush(contact);
+            this.contactRepository.saveAndFlush(contactToEdit);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    @Transactional
+    public boolean deleteContact(String phoneNumber) {
+
+        try {
+            this.contactRepository.deleteByPhoneNumber(phoneNumber);
             return true;
         } catch (Exception e) {
             return false;

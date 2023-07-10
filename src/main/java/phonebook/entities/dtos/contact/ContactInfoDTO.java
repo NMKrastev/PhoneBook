@@ -10,7 +10,7 @@ import phonebook.entities.dtos.company.CompanyAddDTO;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ContactAddDTO {
+public class ContactInfoDTO {
 
     private String firstName;
 
