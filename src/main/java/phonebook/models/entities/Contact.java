@@ -1,10 +1,7 @@
-package phonebook.entities;
+package phonebook.models.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,13 +18,12 @@ import org.hibernate.annotations.FetchMode;
 public class Contact extends BaseEntity {
 
     @Column(name = "first_name")
-    @Size(min = 2, max = 25)
     private String firstName;
 
     @Column(name = "last_name")
     private String lastName;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @Fetch(FetchMode.JOIN)
     private Company company;
 
@@ -36,11 +32,9 @@ public class Contact extends BaseEntity {
     private String phoneNumber;
 
     @Column(unique = true, nullable = false)
-    @Email
     private String email;
 
     @Column
-    @Min(0)
-    private int age;
+    private Integer age;
 
 }

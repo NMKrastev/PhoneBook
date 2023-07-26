@@ -1,9 +1,9 @@
-package phonebook.controller;
+package phonebook.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import phonebook.entities.dtos.contact.ContactInfoDTO;
+import phonebook.models.dtos.contact.ContactInfoDTO;
 import phonebook.services.contact.ContactService;
 
 import java.util.List;
@@ -21,7 +21,6 @@ public class ContactController {
     public ModelAndView index(ModelAndView modelAndView) {
 
         modelAndView.setViewName("index");
-        //this.contacts = DBEntry.getAllContacts();
         final List<ContactInfoDTO> contactsDTO = this.contactService.findAllContacts();
 
         modelAndView.addObject("contacts", contactsDTO);

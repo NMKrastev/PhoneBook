@@ -1,6 +1,6 @@
 package phonebook.services.contact;
 
-import phonebook.entities.dtos.contact.ContactInfoDTO;
+import phonebook.models.dtos.contact.ContactInfoDTO;
 
 import java.util.List;
 

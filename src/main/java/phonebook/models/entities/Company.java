@@ -1,4 +1,4 @@
-package phonebook.entities;
+package phonebook.models.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,6 +14,6 @@ import lombok.Setter;
 @Table(name = "companies")
 public class Company extends BaseEntity {
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private String name;
 }

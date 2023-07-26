@@ -3,13 +3,16 @@ package phonebook.services.contact;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import phonebook.entities.Company;
-import phonebook.entities.Contact;
-import phonebook.entities.dtos.contact.ContactInfoDTO;
+import phonebook.models.entities.Company;
+import phonebook.models.entities.Contact;
+import phonebook.models.dtos.contact.ContactInfoDTO;
 import phonebook.repositories.CompanyRepository;
 import phonebook.repositories.ContactRepository;
+import phonebook.utils.ValidationUtils;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class ContactServiceImpl implements ContactService {
@@ -17,11 +20,14 @@ public class ContactServiceImpl implements ContactService {
     private final ModelMapper mapper;
     private final ContactRepository contactRepository;
     private final CompanyRepository companyRepository;
+    private final ValidationUtils validationUtils;
 
-    public ContactServiceImpl(ModelMapper mapper, ContactRepository contactRepository, CompanyRepository companyRepository) {
+    public ContactServiceImpl(ModelMapper mapper, ContactRepository contactRepository,
+                              CompanyRepository companyRepository, ValidationUtils validationUtils) {
         this.mapper = mapper;
         this.contactRepository = contactRepository;
         this.companyRepository = companyRepository;
+        this.validationUtils = validationUtils;
     }
 
     @Override
@@ -38,23 +44,31 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public boolean addContact(ContactInfoDTO contactDTO) {
 
-        final Contact contact = this.mapper.map(contactDTO, Contact.class);
+        if (!this.validationUtils.isValid(contactDTO)) {
+            return false;
+        }
 
-        Company company = this.companyRepository
-                .findByName(contact.getCompany().getName());
+        if (contactDTO.getCompany().getName().isEmpty()) {
+            return false;
+        }
 
-        if (company == null) {
+        Optional<Company> optionalCompany = this.companyRepository
+                .findByName(contactDTO.getCompany().getName());
 
-            company = new Company(contact.getCompany().getName());
+        if (optionalCompany.isEmpty()) {
+
+            optionalCompany = Optional.of(new Company(contactDTO.getCompany().getName()));
 
             try {
-                this.companyRepository.saveAndFlush(company);
+                optionalCompany.ifPresent(this.companyRepository::saveAndFlush);
             } catch (Exception e) {
                 return false;
             }
         }
 
-        contact.setCompany(company);
+        final Contact contact = this.mapper.map(contactDTO, Contact.class);
+
+        contact.setCompany(optionalCompany.get());
 
         try {
             this.contactRepository.saveAndFlush(contact);
@@ -76,6 +90,10 @@ public class ContactServiceImpl implements ContactService {
     @Transactional
     public boolean editContact(ContactInfoDTO contactDTO, String phoneNumber) {
 
+        if (!this.validationUtils.isValid(contactDTO)) {
+            return false;
+        }
+
         final Contact contactToEdit = this.contactRepository.findByPhoneNumber(phoneNumber);
 
         if (!contactToEdit.getFirstName().equals(contactDTO.getFirstName())) {
@@ -88,16 +106,16 @@ public class ContactServiceImpl implements ContactService {
 
         if (!contactToEdit.getCompany().getName().equals(contactDTO.getCompany().getName())) {
 
-            Company company = this.companyRepository.findByName(contactDTO.getCompany().getName());
+            Optional<Company> optionalCompany = this.companyRepository.findByName(contactDTO.getCompany().getName());
 
-            if (company == null) {
+            if (optionalCompany.isEmpty()) {
 
-                company = new Company(contactDTO.getCompany().getName());
-                this.companyRepository.saveAndFlush(company);
-                contactToEdit.setCompany(company);
+                optionalCompany = Optional.of(new Company(contactDTO.getCompany().getName()));
+                this.companyRepository.saveAndFlush(optionalCompany.get());
+                contactToEdit.setCompany(optionalCompany.get());
 
             } else {
-                contactToEdit.setCompany(company);
+                contactToEdit.setCompany(optionalCompany.get());
             }
         }
 
@@ -109,7 +127,7 @@ public class ContactServiceImpl implements ContactService {
             contactToEdit.setEmail(contactDTO.getEmail());
         }
 
-        if (contactToEdit.getAge() != contactDTO.getAge()) {
+        if (!Objects.equals(contactToEdit.getAge(), contactDTO.getAge())) {
             contactToEdit.setAge(contactDTO.getAge());
         }
 

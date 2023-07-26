@@ -38,7 +38,7 @@
         </tr>
         </thead>
         <tbody>
-        <!--/*@thymesVar id="contact" type="phonebook.entities.dtos.contact.ContactInfoDTO"*/-->
+        <!--/*@thymesVar id="contact" type="phonebook.models.dtos.contact.ContactInfoDTO"*/-->
         <tr th:each="contact : ${contacts}">
             <td th:text="${contact.getFirstName()}"></td>
             <td th:text="${contact.getLastName()}"></td>
